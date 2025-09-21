@@ -21,7 +21,7 @@ struct StructureView: View {
                 case .home:
                     HomePlaceholder()
                 case .stylist:
-                    StylistPlaceholder()
+                    StylistMainView()
                 case .closet:
                     ClosetPlaceholder()
                 case .mypage:
