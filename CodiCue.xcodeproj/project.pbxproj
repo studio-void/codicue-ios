@@ -10,7 +10,6 @@
 		E98183A22E7FF67100C24B28 /* VoidUtilities in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A12E7FF67100C24B28 /* VoidUtilities */; };
 		E98183A52E7FFF8F00C24B28 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A42E7FFF8F00C24B28 /* SwiftyJSON */; };
 		E98183A82E7FFFAC00C24B28 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A72E7FFFAC00C24B28 /* Alamofire */; };
-		E98183AA2E7FFFAC00C24B28 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A92E7FFFAC00C24B28 /* AlamofireDynamic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +30,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E98183A82E7FFFAC00C24B28 /* Alamofire in Frameworks */,
-				E98183AA2E7FFFAC00C24B28 /* AlamofireDynamic in Frameworks */,
 				E98183A52E7FFF8F00C24B28 /* SwiftyJSON in Frameworks */,
 				E98183A22E7FF67100C24B28 /* VoidUtilities in Frameworks */,
 			);
