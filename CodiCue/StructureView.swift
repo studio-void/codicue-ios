@@ -14,12 +14,13 @@ struct StructureView: View {
     var body: some View {
         VStack {
             HeaderView()
+                .padding(.bottom)
             Spacer()
             // Content area switching based on selectedTab
             Group {
                 switch selectedTab {
                 case .home:
-                    HomePlaceholder()
+                    HomeView()
                 case .stylist:
                     StylistMainView()
                 case .closet:
