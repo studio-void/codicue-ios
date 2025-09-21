@@ -111,4 +111,6 @@ struct StylistCard: View {
     }
 }
 
-#Preview { StylistMainView() }
+#Preview {
+    StructureView()
+}
