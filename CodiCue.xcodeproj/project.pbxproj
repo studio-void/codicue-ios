@@ -10,9 +10,11 @@
 		E98183A22E7FF67100C24B28 /* VoidUtilities in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A12E7FF67100C24B28 /* VoidUtilities */; };
 		E98183A52E7FFF8F00C24B28 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A42E7FFF8F00C24B28 /* SwiftyJSON */; };
 		E98183A82E7FFFAC00C24B28 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A72E7FFFAC00C24B28 /* Alamofire */; };
+		E98184062E800CC500C24B28 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = E98184052E800CC100C24B28 /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E98184052E800CC100C24B28 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		E99E3C3D2E6AF85E00CD27FB /* CodiCue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodiCue.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -41,6 +43,7 @@
 		E99E3C342E6AF85E00CD27FB = {
 			isa = PBXGroup;
 			children = (
+				E98184052E800CC100C24B28 /* .gitignore */,
 				E99E3C3F2E6AF85E00CD27FB /* CodiCue */,
 				E99E3C3E2E6AF85E00CD27FB /* Products */,
 			);
@@ -126,6 +129,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E98184062E800CC500C24B28 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
