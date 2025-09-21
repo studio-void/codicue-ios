@@ -1,0 +1,33 @@
+{
+  "originHash" : "146b69ca05d252d9206b2b66b2d904e1bda618df9d916aeaba46f488bfd059e0",
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
+      }
+    },
+    {
+      "identity" : "swiftyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyJSON/SwiftyJSON",
+      "state" : {
+        "revision" : "af76cf3ef710b6ca5f8c05f3a31307d44a3c5828",
+        "version" : "5.0.2"
+      }
+    },
+    {
+      "identity" : "voidutilities",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/studio-void/VoidUtilities",
+      "state" : {
+        "revision" : "3c32a49e7b878df6b2b5ab6fdf40a5569cd71822",
+        "version" : "1.1.1"
+      }
+    }
+  ],
+  "version" : 3
+}
