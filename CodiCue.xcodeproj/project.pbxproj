@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		E98183A22E7FF67100C24B28 /* VoidUtilities in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A12E7FF67100C24B28 /* VoidUtilities */; };
+		E98183A52E7FFF8F00C24B28 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A42E7FFF8F00C24B28 /* SwiftyJSON */; };
+		E98183A82E7FFFAC00C24B28 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A72E7FFFAC00C24B28 /* Alamofire */; };
+		E98183AA2E7FFFAC00C24B28 /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A92E7FFFAC00C24B28 /* AlamofireDynamic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +30,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E98183A82E7FFFAC00C24B28 /* Alamofire in Frameworks */,
+				E98183AA2E7FFFAC00C24B28 /* AlamofireDynamic in Frameworks */,
+				E98183A52E7FFF8F00C24B28 /* SwiftyJSON in Frameworks */,
 				E98183A22E7FF67100C24B28 /* VoidUtilities in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +77,9 @@
 			name = CodiCue;
 			packageProductDependencies = (
 				E98183A12E7FF67100C24B28 /* VoidUtilities */,
+				E98183A42E7FFF8F00C24B28 /* SwiftyJSON */,
+				E98183A72E7FFFAC00C24B28 /* Alamofire */,
+				E98183A92E7FFFAC00C24B28 /* AlamofireDynamic */,
 			);
 			productName = CodiCue;
 			productReference = E99E3C3D2E6AF85E00CD27FB /* CodiCue.app */;
@@ -102,6 +111,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E98183A02E7FF67100C24B28 /* XCRemoteSwiftPackageReference "VoidUtilities" */,
+				E98183A32E7FFF8F00C24B28 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				E98183A62E7FFFAC00C24B28 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E99E3C3E2E6AF85E00CD27FB /* Products */;
@@ -349,6 +360,22 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		E98183A32E7FFF8F00C24B28 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
+		E98183A62E7FFFAC00C24B28 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -356,6 +383,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E98183A02E7FF67100C24B28 /* XCRemoteSwiftPackageReference "VoidUtilities" */;
 			productName = VoidUtilities;
+		};
+		E98183A42E7FFF8F00C24B28 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E98183A32E7FFF8F00C24B28 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		E98183A72E7FFFAC00C24B28 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E98183A62E7FFFAC00C24B28 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		E98183A92E7FFFAC00C24B28 /* AlamofireDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E98183A62E7FFFAC00C24B28 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = AlamofireDynamic;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
