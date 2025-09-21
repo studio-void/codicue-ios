@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Stylist: Identifiable {
+struct Stylist: Identifiable, Hashable {
     let id = UUID()
     let name: String
     let rating: Double
@@ -32,22 +32,30 @@ struct StylistMainView: View {
     }
 
     var body: some View {
-        VStack(spacing: 16) {
-            Spacer().frame(height: 5)
-            
-            SearchBar(
-                text: $query,
-                placeholder: "원하시는 스타일리스트를 검색하세요",
-                onSubmit: { }
-            )
+        NavigationStack {
+            VStack(spacing: 16) {
+                Spacer().frame(height: 5)
 
-            ScrollView {
-                VStack(spacing: 16) {
-                    ForEach(filtered) { stylist in
-                        StylistCard(stylist: stylist)
+                SearchBar(
+                    text: $query,
+                    placeholder: "원하시는 스타일리스트를 검색하세요",
+                    onSubmit: { }
+                )
+
+                ScrollView {
+                    VStack(spacing: 16) {
+                        ForEach(filtered) { stylist in
+                            NavigationLink(value: stylist) {
+                                StylistCard(stylist: stylist)
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
+                    .padding(.bottom, 12)
                 }
-                .padding(.bottom, 12)
+            }
+            .navigationDestination(for: Stylist.self) { stylist in
+                StylistInfoView(stylist: stylist)
             }
         }
     }
@@ -57,13 +65,12 @@ struct StylistCard: View {
     let stylist: Stylist
 
     var body: some View {
-        HStack(spacing: 24) {
+        HStack(spacing: 12) {
             ZStack {
                 Color.white
-                Text("🧑")
-                    .font(.system(size: 40))
+                Text("🧑").font(.system(size: 40))
             }
-            .frame(width: 72, height: 72)
+            .frame(width: 88, height: 88)
             .clipShape(RoundedRectangle(cornerRadius: 18))
             .shadow(color: Color.black.opacity(0.06), radius: 6, x: 0, y: 4)
 
@@ -76,24 +83,17 @@ struct StylistCard: View {
                     Text(stylist.name).font(.title3.bold())
                     if stylist.isVerified {
                         if UIImage(named: "verified") != nil {
-                            Image("verified")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 18)
+                            Image("verified").resizable().scaledToFit().frame(height: 18)
                         } else {
-                            Image(systemName: "checkmark.seal.fill")
-                                .foregroundStyle(.blue)
+                            Image(systemName: "checkmark.seal.fill").foregroundStyle(.blue)
                         }
                     }
                 }
 
                 HStack(spacing: 6) {
-                    Image(systemName: "star.fill")
-                        .foregroundStyle(.yellow)
-                    Text(String(format: "%.2f", stylist.rating))
-                        .font(.headline)
-                    Text("/ 5.0")
-                        .foregroundStyle(.secondary)
+                    Image(systemName: "star.fill").foregroundStyle(.yellow)
+                    Text(String(format: "%.2f", stylist.rating)).font(.headline)
+                    Text("/ 5.0").foregroundStyle(.secondary)
                 }
                 .font(.subheadline)
             }
