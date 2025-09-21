@@ -57,7 +57,7 @@ struct StylistCard: View {
     let stylist: Stylist
 
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 24) {
             ZStack {
                 Color.white
                 Text("🧑")
