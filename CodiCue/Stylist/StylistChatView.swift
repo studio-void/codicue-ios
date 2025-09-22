@@ -23,16 +23,13 @@ struct StylistChatView: View {
         VStack(spacing: 0) {
             header
 
-            Rectangle()
-                .fill(Color.clear)
-                .frame(height: 12)
+            Rectangle().fill(.clear).frame(height: 12)
 
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(spacing: 12) {
                         ForEach(Array(messages.enumerated()), id: \.element.id) { _, msg in
-                            ChatBubble(message: msg)
-                                .id(msg.id)
+                            ChatBubble(message: msg).id(msg.id)
                         }
                     }
                 }
@@ -49,15 +46,20 @@ struct StylistChatView: View {
         .toolbar(.hidden, for: .navigationBar)
         .overlay {
             if showReview {
-                ReviewSheet(
-                    stylistName: stylistName,
-                    rating: $reviewRating,
-                    text: $reviewText,
-                    onSubmit: { finishFlow() },
-                    onClose: { showReview = false }
-                )
-                .transition(.scale.combined(with: .opacity))
-                .animation(.spring(response: 0.28, dampingFraction: 0.9), value: showReview)
+                GeometryReader { geo in
+                    ReviewSheet(
+                        stylistName: stylistName,
+                        rating: $reviewRating,
+                        text: $reviewText,
+                        onSubmit: { finishFlow() },
+                        onClose: { showReview = false }
+                    )
+                    .frame(width: min(geo.size.width * 0.92, 520))
+                    .position(x: geo.size.width / 2, y: geo.size.height / 2)
+                    .transition(.scale.combined(with: .opacity))
+                    .animation(.spring(response: 0.28, dampingFraction: 0.9), value: showReview)
+                }
+                .ignoresSafeArea()
                 .zIndex(1)
             }
         }
@@ -116,6 +118,8 @@ struct StylistChatView: View {
     }
 }
 
+// MARK: - Models
+
 struct ChatMessage: Identifiable {
     enum Role { case stylist, user }
     let id = UUID()
@@ -128,6 +132,8 @@ struct ChatMessage: Identifiable {
         .init(role: .stylist, text: "안녕하세요, XXX님! XXX님의 옷장을 둘러본 결과, 아래와 같은 코디를 해보는 것은 어떤가요?")
     ]
 }
+
+// MARK: - Chat UI
 
 struct ChatBubble: View {
     let message: ChatMessage
@@ -180,8 +186,7 @@ private extension StylistChatView {
                 .padding(.vertical, 12)
                 .background(
                     ZStack {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.white)
+                        RoundedRectangle(cornerRadius: 12).fill(Color.white)
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color.black.opacity(0.12), lineWidth: 1)
                     }
@@ -206,6 +211,8 @@ private extension StylistChatView {
         }
     }
 }
+
+// MARK: - Review Popup (centered, adaptive width)
 
 struct ReviewSheet: View {
     let stylistName: String
@@ -235,8 +242,7 @@ struct ReviewSheet: View {
                 .frame(height: 44)
                 .background(
                     ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white)
+                        RoundedRectangle(cornerRadius: 10).fill(Color.white)
                         RoundedRectangle(cornerRadius: 10)
                             .stroke(Color.black.opacity(0.1), lineWidth: 1)
                     }
@@ -264,10 +270,6 @@ struct ReviewSheet: View {
                 .shadow(color: Color.black.opacity(0.08), radius: 18, x: 0, y: -4)
         )
         .padding(.horizontal, 16)
-        .frame(maxWidth: 420)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        .contentShape(Rectangle())
-        .onTapGesture { }
     }
 }
 
@@ -279,7 +281,7 @@ struct StarRating: View {
         HStack(spacing: 6) {
             ForEach(1...max, id: \.self) { i in
                 Image(systemName: i <= rating ? "star.fill" : "star")
-                    .foregroundStyle(i <= rating ? Color.yellow : Color.gray.opacity(0.6))
+                    .foregroundStyle(i <= rating ? Color.starYellow : Color.gray.opacity(0.6))
                     .font(.system(size: 22))
                     .onTapGesture { rating = i }
             }
