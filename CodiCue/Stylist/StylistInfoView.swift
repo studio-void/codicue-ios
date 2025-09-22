@@ -116,19 +116,22 @@ struct StylistInfoView: View {
 
     // MARK: - Bottom CTA
     private var consultButton: some View {
-        Button(action: {}) {
+        NavigationLink {
+            StylistChatView(stylistName: stylist.name)
+        } label: {
             HStack(spacing: 8) {
                 Text("상담하기").fontWeight(.semibold)
                 Image(systemName: "circle.fill").foregroundStyle(.yellow)
                 Text("50")
             }
             .foregroundStyle(.white)
-            .frame(maxWidth: .infinity, minHeight: 48, maxHeight: 48)
+            .frame(maxWidth: .infinity, minHeight: 48)
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .fill(Color("primaryColor"))
             )
         }
+        .buttonStyle(.plain)
     }
 }
 
