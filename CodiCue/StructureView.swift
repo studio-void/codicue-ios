@@ -26,7 +26,7 @@ struct StructureView: View {
                 case .closet:
                     ClosetPlaceholder()
                 case .mypage:
-                    MyPagePlaceholder()
+                    MyPageMainView()
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
