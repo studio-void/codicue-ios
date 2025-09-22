@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E90DAD612E8135520070139F /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = E90DAD602E8135520070139F /* SDWebImageSwiftUI */; };
 		E98183A22E7FF67100C24B28 /* VoidUtilities in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A12E7FF67100C24B28 /* VoidUtilities */; };
 		E98183A52E7FFF8F00C24B28 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A42E7FFF8F00C24B28 /* SwiftyJSON */; };
 		E98183A82E7FFFAC00C24B28 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E98183A72E7FFFAC00C24B28 /* Alamofire */; };
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E90DAD612E8135520070139F /* SDWebImageSwiftUI in Frameworks */,
 				E98183A82E7FFFAC00C24B28 /* Alamofire in Frameworks */,
 				E98183A52E7FFF8F00C24B28 /* SwiftyJSON in Frameworks */,
 				E98183A22E7FF67100C24B28 /* VoidUtilities in Frameworks */,
@@ -80,6 +82,7 @@
 				E98183A12E7FF67100C24B28 /* VoidUtilities */,
 				E98183A42E7FFF8F00C24B28 /* SwiftyJSON */,
 				E98183A72E7FFFAC00C24B28 /* Alamofire */,
+				E90DAD602E8135520070139F /* SDWebImageSwiftUI */,
 			);
 			productName = CodiCue;
 			productReference = E99E3C3D2E6AF85E00CD27FB /* CodiCue.app */;
@@ -113,6 +116,7 @@
 				E98183A02E7FF67100C24B28 /* XCRemoteSwiftPackageReference "VoidUtilities" */,
 				E98183A32E7FFF8F00C24B28 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				E98183A62E7FFFAC00C24B28 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				E90DAD5F2E8135520070139F /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E99E3C3E2E6AF85E00CD27FB /* Products */;
@@ -353,6 +357,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E90DAD5F2E8135520070139F /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.3;
+			};
+		};
 		E98183A02E7FF67100C24B28 /* XCRemoteSwiftPackageReference "VoidUtilities" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/studio-void/VoidUtilities";
@@ -380,6 +392,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E90DAD602E8135520070139F /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E90DAD5F2E8135520070139F /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
 		E98183A12E7FF67100C24B28 /* VoidUtilities */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E98183A02E7FF67100C24B28 /* XCRemoteSwiftPackageReference "VoidUtilities" */;
