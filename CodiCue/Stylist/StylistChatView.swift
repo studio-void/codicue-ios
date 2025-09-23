@@ -9,26 +9,27 @@ import SwiftUI
 
 struct StylistChatView: View {
     let stylistName: String
+    var onFinish: (() -> Void)? = nil
+
     @Environment(\.dismiss) private var dismiss
     @State private var input: String = ""
     @State private var messages: [ChatMessage] = ChatMessage.mock
 
-    private let suggestInsertAfterIndex: Int = 2
+    @State private var showReview: Bool = false
+    @State private var reviewRating: Int = 0
+    @State private var reviewText: String = ""
 
     var body: some View {
         VStack(spacing: 0) {
             header
 
+            Rectangle().fill(.clear).frame(height: 12)
+
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(spacing: 12) {
-                        ForEach(Array(messages.enumerated()), id: \.element.id) { idx, msg in
-                            ChatBubble(message: msg)
-                                .id(msg.id)
-
-//                            if idx == suggestInsertAfterIndex {
-//                                SuggestSection()
-//                            }
+                        ForEach(Array(messages.enumerated()), id: \.element.id) { _, msg in
+                            ChatBubble(message: msg).id(msg.id)
                         }
                     }
                 }
@@ -40,15 +41,32 @@ struct StylistChatView: View {
             }
 
             inputBar
-                .background(Color.white)
-                .shadow(color: Color.black.opacity(0.06), radius: 6, x: 0, y: -3)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
+        .overlay {
+            if showReview {
+                GeometryReader { geo in
+                    ReviewSheet(
+                        stylistName: stylistName,
+                        rating: $reviewRating,
+                        text: $reviewText,
+                        onSubmit: { finishFlow() },
+                        onClose: { showReview = false }
+                    )
+                    .frame(width: min(geo.size.width * 0.92, 520))
+                    .position(x: geo.size.width / 2, y: geo.size.height / 2)
+                    .transition(.scale.combined(with: .opacity))
+                    .animation(.spring(response: 0.28, dampingFraction: 0.9), value: showReview)
+                }
+                .ignoresSafeArea()
+                .zIndex(1)
+            }
+        }
     }
 
     private var header: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 8) {
             Button(action: { dismiss() }) {
                 Image(systemName: "chevron.left")
                     .font(.system(size: 18, weight: .semibold))
@@ -58,7 +76,6 @@ struct StylistChatView: View {
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 Text(stylistName)
                     .font(.system(size: 24, weight: .bold))
-
                 if UIImage(named: "verified") != nil {
                     Image("verified")
                         .resizable()
@@ -74,21 +91,34 @@ struct StylistChatView: View {
 
             Spacer(minLength: 0)
 
-            Button(action: {}) {
+            Button(action: { showReview = true }) {
                 Text("완료")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.white)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                     .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        RoundedRectangle(cornerRadius: 12)
                             .fill(Color("primaryColor"))
                     )
             }
             .buttonStyle(.plain)
         }
     }
+
+    private func finishFlow() {
+        if let onFinish {
+            onFinish()
+        } else {
+            dismiss()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                dismiss()
+            }
+        }
+    }
 }
+
+// MARK: - Models
 
 struct ChatMessage: Identifiable {
     enum Role { case stylist, user }
@@ -102,6 +132,8 @@ struct ChatMessage: Identifiable {
         .init(role: .stylist, text: "안녕하세요, XXX님! XXX님의 옷장을 둘러본 결과, 아래와 같은 코디를 해보는 것은 어떤가요?")
     ]
 }
+
+// MARK: - Chat UI
 
 struct ChatBubble: View {
     let message: ChatMessage
@@ -129,54 +161,6 @@ struct ChatBubble: View {
     }
 }
 
-struct SuggestSection: View {
-    var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 16) {
-                ProductCard(title: "아이보리 하프팬츠", tags: ["#아이보리", "#팬츠"])
-                ProductCard(title: "블랙 하프팬츠", tags: ["#쿨톤", "#반바지"])
-            }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-        }
-    }
-}
-
-struct ProductCard: View {
-    let title: String
-    let tags: [String]
-
-    var body: some View {
-        VStack(alignment: .center, spacing: 10) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color.white)
-                    .shadow(color: Color.black.opacity(0.03), radius: 2, x: 0, y: 1)
-                Text("👖").font(.system(size: 40))
-            }
-            .frame(width: 140, height: 140)
-
-            Text(title)
-                .font(.subheadline)
-                .foregroundStyle(.primary)
-                .lineLimit(1)
-
-            HStack(spacing: 6) {
-                ForEach(tags, id: \.self) { tag in
-                    TagChip(text: tag)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .center)
-        }
-        .padding(10)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color("primaryColor").opacity(0.15))
-                .shadow(color: Color.black.opacity(0.05), radius: 6, x: 0, y: 2)
-        )
-    }
-}
-
 struct TagChip: View {
     let text: String
     var body: some View {
@@ -201,9 +185,11 @@ private extension StylistChatView {
                 .padding(.horizontal, 14)
                 .padding(.vertical, 12)
                 .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white)
-                        .shadow(color: Color.black.opacity(0.04), radius: 3, x: 0, y: 1)
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12).fill(Color.white)
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.black.opacity(0.12), lineWidth: 1)
+                    }
                 )
 
             Button {
@@ -217,14 +203,89 @@ private extension StylistChatView {
                     .foregroundStyle(.white)
                     .frame(width: 44, height: 44)
                     .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        RoundedRectangle(cornerRadius: 12)
                             .fill(Color("primaryColor"))
                     )
             }
             .buttonStyle(.plain)
         }
+    }
+}
+
+// MARK: - Review Popup (centered, adaptive width)
+
+struct ReviewSheet: View {
+    let stylistName: String
+    @Binding var rating: Int
+    @Binding var text: String
+    var onSubmit: () -> Void
+    var onClose: () -> Void
+
+    var body: some View {
+        VStack(spacing: 12) {
+            HStack(spacing: 6) {
+                Text(stylistName).font(.headline).bold()
+                if UIImage(named: "verified") != nil {
+                    Image("verified").resizable().frame(width: 16, height: 16)
+                } else {
+                    Image(systemName: "checkmark.seal.fill").foregroundStyle(.blue)
+                }
+                Text("님과의 상담은 어땠나요?").font(.headline)
+            }
+
+            StarRating(rating: $rating)
+
+            TextField("원하시면 리뷰를 입력하세요", text: $text)
+                .textInputAutocapitalization(.none)
+                .disableAutocorrection(true)
+                .padding(.horizontal, 12)
+                .frame(height: 44)
+                .background(
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10).fill(Color.white)
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.black.opacity(0.1), lineWidth: 1)
+                    }
+                )
+
+            Button(action: onSubmit) {
+                Text("상담 종료")
+                    .font(.headline.weight(.semibold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12).fill(Color("primaryColor"))
+                    )
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.black.opacity(0.15), lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.08), radius: 18, x: 0, y: -4)
+        )
         .padding(.horizontal, 16)
-        .padding(.vertical, 10)
+    }
+}
+
+struct StarRating: View {
+    @Binding var rating: Int
+    private let max = 5
+
+    var body: some View {
+        HStack(spacing: 6) {
+            ForEach(1...max, id: \.self) { i in
+                Image(systemName: i <= rating ? "star.fill" : "star")
+                    .foregroundStyle(i <= rating ? Color.starYellow : Color.gray.opacity(0.6))
+                    .font(.system(size: 22))
+                    .onTapGesture { rating = i }
+            }
+        }
     }
 }
 
