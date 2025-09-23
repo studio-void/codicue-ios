@@ -12,6 +12,7 @@ struct StructureView: View {
     @State private var selectedTab: Tab = .home
     @AppStorage("jwtToken") var jwtToken: String?
     @AppStorage("isStylist") var isStylist: Bool?
+    @State private var goPoints: Bool = false
     
     var body: some View {
         if (jwtToken != nil) {
@@ -46,20 +47,27 @@ struct StructureView: View {
 
 struct HeaderView: View {
     @AppStorage("point") var point = 0
+    var onCoinsTap: () -> Void = {}
+
     var body: some View {
-        HStack{
+        HStack {
             Image("logoType")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 28)
             Spacer()
-            Image("coins")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 28)
-            Text("\(point)P")
-                .fontWeight(.semibold)
-                .font(.headline)
+            Button(action: onCoinsTap) {
+                HStack(spacing: 6) {
+                    Image("coins")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 28)
+                    Text("\(point)P")
+                        .fontWeight(.semibold)
+                        .font(.headline)
+                }
+            }
+            .buttonStyle(.plain)
         }
     }
 }
@@ -105,12 +113,8 @@ struct CustomTabBar: View {
                         .foregroundColor(selectedTab == tab ? Color("primaryColor") : .primary)
                 }
                 .contentShape(Rectangle())
-                .onTapGesture {
-                    selectedTab = tab
-                }
-                if index != Tab.allCases.count - 1 {
-                    Spacer()
-                }
+                .onTapGesture { selectedTab = tab }
+                if index != Tab.allCases.count - 1 { Spacer() }
             }
         }
         .padding(.horizontal, 24)
@@ -121,7 +125,6 @@ struct HomePlaceholder: View { var body: some View { Text("Home").font(.largeTit
 struct StylistPlaceholder: View { var body: some View { Text("Stylist").font(.largeTitle) } }
 struct ClosetPlaceholder: View { var body: some View { Text("Closet").font(.largeTitle) } }
 struct MyPagePlaceholder: View { var body: some View { Text("My Page").font(.largeTitle) } }
-
 
 #Preview {
     StructureView()
