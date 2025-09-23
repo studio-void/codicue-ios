@@ -10,30 +10,37 @@ import VoidUtilities
 
 struct StructureView: View {
     @State private var selectedTab: Tab = .home
+    @AppStorage("jwtToken") var jwtToken: String?
+    @AppStorage("isStylist") var isStylist: Bool?
     
     var body: some View {
-        VStack {
-            HeaderView()
-                .padding(.bottom)
-            Spacer()
-            // Content area switching based on selectedTab
-            Group {
-                switch selectedTab {
-                case .home:
-                    HomeView()
-                case .stylist:
-                    StylistMainView()
-                case .closet:
-                    ClosetPlaceholder()
-                case .mypage:
-                    MyPageMainView()
+        if (jwtToken != nil) {
+            VStack {
+                HeaderView()
+                    .padding(.bottom)
+                Spacer()
+                // Content area switching based on selectedTab
+                Group {
+                    switch selectedTab {
+                    case .home:
+                        HomeView()
+                    case .stylist:
+                        StylistMainView()
+                    case .closet:
+                        ClosetPlaceholder()
+                    case .mypage:
+                        MyPageMainView()
+                    }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                Spacer()
+                CustomTabBar(selectedTab: $selectedTab)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            Spacer()
-            CustomTabBar(selectedTab: $selectedTab)
+            .padding()
+        } else {
+            AuthMainView()
+                .padding()
         }
-        .padding()
     }
 }
 
