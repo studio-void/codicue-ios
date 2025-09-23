@@ -24,7 +24,7 @@ struct StructureView: View {
                 case .stylist:
                     StylistMainView()
                 case .closet:
-                    ClosetPlaceholder()
+                    ClosetMainView()
                 case .mypage:
                     MyPageMainView()
                 }
