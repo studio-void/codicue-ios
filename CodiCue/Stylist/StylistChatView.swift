@@ -230,7 +230,7 @@ struct ReviewSheet: View {
                 } else {
                     Image(systemName: "checkmark.seal.fill").foregroundStyle(.blue)
                 }
-                Text("와의 상담은 어땠나요?").font(.headline)
+                Text("님과의 상담은 어땠나요?").font(.headline)
             }
 
             StarRating(rating: $rating)
