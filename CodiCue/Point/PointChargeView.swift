@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PointChargeView: View {
-    @AppStorage("point") private var point: Int = 213
+    @AppStorage("point") private var point: Int = 0
 
     private let packs: [PointPack] = [
         .init(points: 200,   priceKRW:  2_200),

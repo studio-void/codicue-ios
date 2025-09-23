@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PointMainView: View {
-    @AppStorage("point") private var point: Int = 213
+    @AppStorage("point") private var point: Int = 0
     @State private var history: [PointHistory] = PointHistory.mock
     
     var body: some View {
@@ -96,7 +96,7 @@ struct PointMainView: View {
 }
 
 struct PointHistoryRow: View {
-    @AppStorage("point") private var point: Int = 213
+    @AppStorage("point") private var point: Int = 0
     let item: PointHistory
     
     var body: some View {
@@ -107,7 +107,7 @@ struct PointHistoryRow: View {
             Spacer()
             Text(item.delta > 0 ? "+\(item.delta)P" : "\(item.delta)P")
                 .font(.subheadline.weight(.semibold))
-                .foregroundStyle(item.delta > 0 ? Color.green : Color.primary)
+                .foregroundStyle(item.delta > 0 ? Color("primaryColor") : Color.primary)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
                 .background(
@@ -119,9 +119,6 @@ struct PointHistoryRow: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color("primaryColor").opacity(0.18))
         )
-        .onTapGesture {
-            point += item.delta
-        }
     }
 }
 
