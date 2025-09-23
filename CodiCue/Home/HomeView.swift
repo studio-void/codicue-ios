@@ -34,17 +34,21 @@ struct HomeView: View {
             }
             ScrollView(.horizontal) {
                 if stylists.isEmpty || isLoading {
-                    ProgressView()
+                    HStack{
+                        Spacer ()
+                        ProgressView()
+                        Spacer()
+                    }
                 } else {
                     HStack(spacing: 24){
                         ForEach(stylists) { stylist in
-                            HomeStylistCardView(imageURL: URL(string: stylist.profileImageUrl), name: stylist.name, rating: stylist.rating, descriptions: [stylist.introduction], isVerified: stylist.isVerified)
+                            HomeStylistCardView(imageURL: URL(string: stylist.profileImageUrl), name: stylist.name, rating: stylist.rating, descriptions: stylist.career, isVerified: stylist.isVerified)
                         }
                     }
                     .padding()
                 }
             }
-            .background(Color("lightPink"))
+            .background(isLoading ? Color.clear : Color("lightPink"))
             .onAppear(perform: fetchStylists)
             Spacer()
         }
@@ -76,6 +80,7 @@ struct HomeView: View {
                 let reviewCount = item["reviewCount"].intValue
                 let isVerified = item["isVerified"].boolValue
                 let introduction = item["introduction"].stringValue
+                let career = item["career"].arrayObject as? [String] ?? []
                 let profileImageUrl = item["profileImageUrl"].stringValue
                 let specialtyStyles = item["specialtyStyles"].arrayObject as? [String] ?? []
 
@@ -102,6 +107,7 @@ struct HomeView: View {
                     reviewCount: reviewCount,
                     isVerified: isVerified,
                     introduction: introduction,
+                    career: career,
                     profileImageUrl: profileImageUrl,
                     specialtyStyles: specialtyStyles,
                     createdAt: createdAt,
