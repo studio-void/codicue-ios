@@ -36,6 +36,7 @@ struct StylistInfoView: View {
             Spacer(minLength: 8)
             consultButton
         }
+        .padding()
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
     }

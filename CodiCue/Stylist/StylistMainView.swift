@@ -32,7 +32,7 @@ struct StylistMainView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             VStack(spacing: 16) {
                 Spacer().frame(height: 5)
 
