@@ -11,13 +11,15 @@ import VoidUtilities
 struct StructureView: View {
     @State private var selectedTab: Tab = .home
     @State private var goPoints: Bool = false
-    
+
     var body: some View {
         NavigationStack {
             VStack {
                 HeaderView(onCoinsTap: { goPoints = true })
                     .padding(.bottom)
+
                 Spacer()
+
                 Group {
                     switch selectedTab {
                     case .home:
@@ -25,13 +27,15 @@ struct StructureView: View {
                     case .stylist:
                         StylistMainView()
                     case .closet:
-                        ClosetPlaceholder()
+                        ClosetMainView()
                     case .mypage:
                         MyPageMainView()
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+
                 Spacer()
+
                 CustomTabBar(selectedTab: $selectedTab)
             }
             .padding()
@@ -53,7 +57,9 @@ struct HeaderView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 28)
+
             Spacer()
+
             Button(action: onCoinsTap) {
                 HStack(spacing: 6) {
                     Image("coins")
@@ -75,9 +81,9 @@ enum Tab: String, CaseIterable, Identifiable {
     case stylist
     case closet
     case mypage
-    
+
     var id: String { self.rawValue }
-    
+
     var filledIconName: String {
         switch self {
         case .home: return "house.fill"
@@ -86,7 +92,7 @@ enum Tab: String, CaseIterable, Identifiable {
         case .mypage: return "person.fill"
         }
     }
-    
+
     var unfilledIconName: String {
         switch self {
         case .home: return "house"
@@ -99,7 +105,7 @@ enum Tab: String, CaseIterable, Identifiable {
 
 struct CustomTabBar: View {
     @Binding var selectedTab: Tab
-    
+
     var body: some View {
         HStack {
             ForEach(Array(Tab.allCases.enumerated()), id: \.element.id) { index, tab in
@@ -112,17 +118,13 @@ struct CustomTabBar: View {
                 }
                 .contentShape(Rectangle())
                 .onTapGesture { selectedTab = tab }
+
                 if index != Tab.allCases.count - 1 { Spacer() }
             }
         }
         .padding(.horizontal, 24)
     }
 }
-
-struct HomePlaceholder: View { var body: some View { Text("Home").font(.largeTitle) } }
-struct StylistPlaceholder: View { var body: some View { Text("Stylist").font(.largeTitle) } }
-struct ClosetPlaceholder: View { var body: some View { Text("Closet").font(.largeTitle) } }
-struct MyPagePlaceholder: View { var body: some View { Text("My Page").font(.largeTitle) } }
 
 #Preview {
     StructureView()
