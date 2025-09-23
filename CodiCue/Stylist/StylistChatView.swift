@@ -42,6 +42,7 @@ struct StylistChatView: View {
 
             inputBar
         }
+        .padding()
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .overlay {

@@ -14,6 +14,7 @@ struct StylistInfo: Hashable, Identifiable {
     var reviewCount: Int
     var isVerified: Bool
     var introduction: String
+    var career: [String]
     var profileImageUrl: String
     var specialtyStyles: [String]
     var createdAt: Date
