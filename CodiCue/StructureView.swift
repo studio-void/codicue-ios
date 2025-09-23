@@ -10,49 +10,62 @@ import VoidUtilities
 
 struct StructureView: View {
     @State private var selectedTab: Tab = .home
+    @State private var goPoints: Bool = false
     
     var body: some View {
-        VStack {
-            HeaderView()
-                .padding(.bottom)
-            Spacer()
-            // Content area switching based on selectedTab
-            Group {
-                switch selectedTab {
-                case .home:
-                    HomeView()
-                case .stylist:
-                    StylistMainView()
-                case .closet:
-                    ClosetPlaceholder()
-                case .mypage:
-                    MyPageMainView()
+        NavigationStack {
+            VStack {
+                HeaderView(onCoinsTap: { goPoints = true })
+                    .padding(.bottom)
+                Spacer()
+                Group {
+                    switch selectedTab {
+                    case .home:
+                        HomeView()
+                    case .stylist:
+                        StylistMainView()
+                    case .closet:
+                        ClosetPlaceholder()
+                    case .mypage:
+                        MyPageMainView()
+                    }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                Spacer()
+                CustomTabBar(selectedTab: $selectedTab)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            Spacer()
-            CustomTabBar(selectedTab: $selectedTab)
+            .padding()
+            .background(
+                NavigationLink("", destination: PointMainView(), isActive: $goPoints)
+                    .hidden()
+            )
         }
-        .padding()
     }
 }
 
 struct HeaderView: View {
     @AppStorage("point") var point = 0
+    var onCoinsTap: () -> Void = {}
+
     var body: some View {
-        HStack{
+        HStack {
             Image("logoType")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 28)
             Spacer()
-            Image("coins")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 28)
-            Text("\(point)P")
-                .fontWeight(.semibold)
-                .font(.headline)
+            Button(action: onCoinsTap) {
+                HStack(spacing: 6) {
+                    Image("coins")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 28)
+                    Text("\(point)P")
+                        .fontWeight(.semibold)
+                        .font(.headline)
+                }
+            }
+            .buttonStyle(.plain)
         }
     }
 }
@@ -98,12 +111,8 @@ struct CustomTabBar: View {
                         .foregroundColor(selectedTab == tab ? Color("primaryColor") : .primary)
                 }
                 .contentShape(Rectangle())
-                .onTapGesture {
-                    selectedTab = tab
-                }
-                if index != Tab.allCases.count - 1 {
-                    Spacer()
-                }
+                .onTapGesture { selectedTab = tab }
+                if index != Tab.allCases.count - 1 { Spacer() }
             }
         }
         .padding(.horizontal, 24)
@@ -114,7 +123,6 @@ struct HomePlaceholder: View { var body: some View { Text("Home").font(.largeTit
 struct StylistPlaceholder: View { var body: some View { Text("Stylist").font(.largeTitle) } }
 struct ClosetPlaceholder: View { var body: some View { Text("Closet").font(.largeTitle) } }
 struct MyPagePlaceholder: View { var body: some View { Text("My Page").font(.largeTitle) } }
-
 
 #Preview {
     StructureView()
