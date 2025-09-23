@@ -32,15 +32,35 @@ struct Garment: Identifiable {
     ]
 }
 
+
+private struct ClosetCardLayout {
+    let cardWidth: CGFloat
+    let imageH: CGFloat
+    let titleH: CGFloat
+    let tagsH: CGFloat
+
+    static func `for`(_ sizeClass: UserInterfaceSizeClass?) -> Self {
+        if sizeClass == .regular {
+            return .init(cardWidth: 170, imageH: 140, titleH: 40, tagsH: 30)
+        } else {
+            return .init(cardWidth: 140, imageH: 120, titleH: 36, tagsH: 28)
+        }
+    }
+}
+
+
 struct ClosetMainView: View {
     @State private var items: [Garment] = Garment.mock
     @State private var showingAdd = false
+    @Environment(\.horizontalSizeClass) private var hSize
 
     private var grouped: [GarmentCategory: [Garment]] {
         Dictionary(grouping: items, by: { $0.category })
     }
 
     var body: some View {
+        let layout = ClosetCardLayout.for(hSize)
+
         ZStack(alignment: .bottomTrailing) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
@@ -52,7 +72,6 @@ struct ClosetMainView: View {
                             HStack {
                                 Text(cat.rawValue)
                                     .font(.headline.weight(.semibold))
-                                    .foregroundStyle(.primary)
                                 Spacer()
                             }
                             .padding(.horizontal, 12)
@@ -63,7 +82,7 @@ struct ClosetMainView: View {
                             )
                             .padding(.vertical, 4)
 
-                            GarmentRow(items: rows)
+                            GarmentRow(items: rows, layout: layout)
                         }
                     }
                 }
@@ -84,7 +103,7 @@ struct ClosetMainView: View {
             .padding(.trailing, 4)
             .padding(.bottom, 20)
             .sheet(isPresented: $showingAdd) {
-                Text("옷장에 옷 추가하기 (근데 아직 안만들음ㅋ)")
+                Text("옷장에 옷 추가하기 (준비 중)")
                     .font(.headline)
                     .padding()
             }
@@ -93,8 +112,10 @@ struct ClosetMainView: View {
     }
 }
 
+
 private struct GarmentRow: View {
     let items: [Garment]
+    let layout: ClosetCardLayout
     @State private var maxHeight: CGFloat = 0
 
     var body: some View {
@@ -104,7 +125,7 @@ private struct GarmentRow: View {
                     NavigationLink {
                         ClosetDetailsView(garment: g)
                     } label: {
-                        GarmentCard(garment: g)
+                        GarmentCard(garment: g, layout: layout)
                     }
                     .buttonStyle(.plain)
                     .background(HeightReporter())
@@ -124,7 +145,6 @@ private struct HeightReporter: View {
         }
     }
 }
-
 private struct EqualHeightKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
@@ -132,13 +152,10 @@ private struct EqualHeightKey: PreferenceKey {
     }
 }
 
+
 private struct GarmentCard: View {
     let garment: Garment
-
-    private static let cardWidth: CGFloat = 140
-    private static let imageH: CGFloat = 120
-    private static let titleH: CGFloat = 36
-    private static let tagsH: CGFloat = 28
+    let layout: ClosetCardLayout
 
     var body: some View {
         VStack(spacing: 10) {
@@ -156,23 +173,23 @@ private struct GarmentCard: View {
                     Text("👕").font(.system(size: 40))
                 }
             }
-            .frame(height: Self.imageH)
+            .frame(height: layout.imageH)
 
             Text(garment.title)
                 .font(.footnote)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
-                .frame(height: Self.titleH)
+                .frame(height: layout.titleH)
 
             HStack(spacing: 6) {
                 ForEach(garment.tags.prefix(2), id: \.self) { t in
                     ClosetPill(text: t)
                 }
             }
-            .frame(height: Self.tagsH)
+            .frame(height: layout.tagsH)
         }
         .padding(10)
-        .frame(width: Self.cardWidth)
+        .frame(width: layout.cardWidth)
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color("primaryColor").opacity(0.15))
@@ -196,12 +213,12 @@ private struct ClosetPill: View {
     }
 }
 
-struct closetPlaceholder: View {
+struct ClosetPlaceholder: View {
     var body: some View {
         NavigationStack { ClosetMainView() }
     }
 }
 
 #Preview {
-    NavigationStack { ClosetMainView() }
+    ClosetPlaceholder()
 }
