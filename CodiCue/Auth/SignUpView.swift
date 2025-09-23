@@ -103,120 +103,122 @@ struct SignUpView: View {
                     .frame(maxWidth: .infinity)
                 }
                 .padding(.bottom)
-
-                // 신장 / 체중 라인
-                HStack(spacing: 20) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack { Text("신장").fontWeight(.semibold); Spacer() }
-                        ZStack(alignment: .trailing) {
-                            TextField("예: 173.5", text: $height)
-                                .keyboardType(.decimalPad)
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                )
-                            Text("cm")
-                                .foregroundStyle(.gray)
-                                .padding(.trailing, 16)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack { Text("체중").fontWeight(.semibold); Spacer() }
-                        ZStack(alignment: .trailing) {
-                            TextField("예: 58.5", text: $weight)
-                                .keyboardType(.decimalPad)
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                )
-                            Text("kg")
-                                .foregroundStyle(.gray)
-                                .padding(.trailing, 16)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                }
-                .padding(.bottom)
-
-                // 추구 스타일
-                HStack { Text("추구 스타일").fontWeight(.semibold); Spacer() }
-
-                Menu {
-                    // 전체 스타일 목록을 드롭다운으로 표시하며 토글 선택
-                    ForEach(allStyles, id: \.self) { style in
-                        Button(action: {
-                            if selectedStyles.contains(style) {
-                                selectedStyles.remove(style)
-                            } else {
-                                selectedStyles.insert(style)
+                
+                if !isStylist {
+                    // 신장 / 체중 라인
+                    HStack(spacing: 20) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack { Text("신장").fontWeight(.semibold); Spacer() }
+                            ZStack(alignment: .trailing) {
+                                TextField("예: 173.5", text: $height)
+                                    .keyboardType(.decimalPad)
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(Color.gray, lineWidth: 1)
+                                    )
+                                Text("cm")
+                                    .foregroundStyle(.gray)
+                                    .padding(.trailing, 16)
                             }
-                        }) {
-                            HStack {
-                                Text("#\(style)")
-                                Spacer()
+                        }
+                        .frame(maxWidth: .infinity)
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack { Text("체중").fontWeight(.semibold); Spacer() }
+                            ZStack(alignment: .trailing) {
+                                TextField("예: 58.5", text: $weight)
+                                    .keyboardType(.decimalPad)
+                                    .padding()
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(Color.gray, lineWidth: 1)
+                                    )
+                                Text("kg")
+                                    .foregroundStyle(.gray)
+                                    .padding(.trailing, 16)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                    .padding(.bottom)
+                    
+                    // 추구 스타일
+                    HStack { Text("추구 스타일").fontWeight(.semibold); Spacer() }
+                    
+                    Menu {
+                        // 전체 스타일 목록을 드롭다운으로 표시하며 토글 선택
+                        ForEach(allStyles, id: \.self) { style in
+                            Button(action: {
                                 if selectedStyles.contains(style) {
-                                    Image(systemName: "checkmark")
-                                }
-                            }
-                        }
-                    }
-
-                    // 선택 초기화
-                    if !selectedStyles.isEmpty {
-                        Divider()
-                        Button(role: .destructive) {
-                            selectedStyles.removeAll()
-                        } label: {
-                            Label("전체 선택 해제", systemImage: "xmark.circle")
-                        }
-                    }
-                } label: {
-                    // 라벨: 선택된 칩들을 보여주는 박스 + 우측 ▲▼ 아이콘
-                    ZStack(alignment: .trailing) {
-                        VStack(alignment: .leading) {
-                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 4)], alignment: .leading, spacing: 4) {
-                                if selectedStyles.isEmpty {
-                                    Text("선택")
-                                        .foregroundStyle(.gray)
-                                        .padding(.vertical, 6)
+                                    selectedStyles.remove(style)
                                 } else {
-                                    ForEach(Array(selectedStyles).sorted(), id: \.self) { style in
-                                        Text("#\(style)")
-                                            .padding(.horizontal, 12)
-                                            .padding(.vertical, 6)
-                                            .background(
-                                                Capsule().fill(Color("primaryColor").opacity(0.2))
-                                            )
-                                            .foregroundStyle(Color("primaryColor"))
+                                    selectedStyles.insert(style)
+                                }
+                            }) {
+                                HStack {
+                                    Text("#\(style)")
+                                    Spacer()
+                                    if selectedStyles.contains(style) {
+                                        Image(systemName: "checkmark")
                                     }
                                 }
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 16)
-                                .stroke(Color.gray, lineWidth: 1)
-                        )
-
-                        VStack(spacing: 2) {
-                            Image(systemName: "chevron.up")
-                            Image(systemName: "chevron.down")
+                        
+                        // 선택 초기화
+                        if !selectedStyles.isEmpty {
+                            Divider()
+                            Button(role: .destructive) {
+                                selectedStyles.removeAll()
+                            } label: {
+                                Label("전체 선택 해제", systemImage: "xmark.circle")
+                            }
                         }
-                        .font(.footnote)
-                        .foregroundStyle(Color.gray)
-                        .padding(.trailing, 16)
+                    } label: {
+                        // 라벨: 선택된 칩들을 보여주는 박스 + 우측 ▲▼ 아이콘
+                        ZStack(alignment: .trailing) {
+                            VStack(alignment: .leading) {
+                                LazyVGrid(columns: [GridItem(.adaptive(minimum: 80), spacing: 4)], alignment: .leading, spacing: 4) {
+                                    if selectedStyles.isEmpty {
+                                        Text("선택")
+                                            .foregroundStyle(.gray)
+                                            .padding(.vertical, 6)
+                                    } else {
+                                        ForEach(Array(selectedStyles).sorted(), id: \.self) { style in
+                                            Text("#\(style)")
+                                                .padding(.horizontal, 12)
+                                                .padding(.vertical, 6)
+                                                .background(
+                                                    Capsule().fill(Color("primaryColor").opacity(0.2))
+                                                )
+                                                .foregroundStyle(Color("primaryColor"))
+                                        }
+                                    }
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color.gray, lineWidth: 1)
+                            )
+                            
+                            VStack(spacing: 2) {
+                                Image(systemName: "chevron.up")
+                                Image(systemName: "chevron.down")
+                            }
+                            .font(.footnote)
+                            .foregroundStyle(Color.gray)
+                            .padding(.trailing, 16)
+                        }
                     }
+                    .menuStyle(.borderlessButton)
+                    .padding(.bottom,24)
                 }
-                .menuStyle(.borderlessButton)
-                .padding(.bottom,24)
                 
                 Button(action: {
-                    
+                    isStylist
                 }) {
                     VoidButtonView(.primary, label: "회원가입", tintColor: Color("primaryColor"))
                 }
@@ -231,7 +233,20 @@ struct SignUpView: View {
             let (isSuccess, data) = await sendPostRequest(endpoint: "user", parameters: params)
             if isSuccess {
                 if let data = data {
-                    data["accessToken"]
+                    let token = data["accessToken"].string
+                    self.jwtToken = token
+                }
+            }
+        }
+    }
+    private func stylistSignUp() {
+        Task{
+            let params = ["email": AnyEncodable(email), "password": AnyEncodable(password), "name": AnyEncodable(name)]
+            let (isSuccess, data) = await sendPostRequest(endpoint: "stylists", parameters: params)
+            if isSuccess {
+                if let data = data {
+                    let token = data["accessToken"].string
+                    self.jwtToken = token
                 }
             }
         }
