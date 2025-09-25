@@ -10,35 +10,55 @@ import SwiftUI
 struct PointMainView: View {
     @AppStorage("point") private var point: Int = 0
     @State private var history: [PointHistory] = PointHistory.mock
-    
+
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     Text("포인트")
                         .font(.title3.bold())
-                    
+
                     ZStack {
                         LinearGradient(
                             stops: [
-                                Gradient.Stop(color: Color(red: 0.88, green: 0.68, blue: 0.77), location: 0.00),
-                                Gradient.Stop(color: Color(red: 0.78, green: 0.24, blue: 0.5), location: 1.00),
+                                Gradient.Stop(
+                                    color: Color(
+                                        red: 0.88,
+                                        green: 0.68,
+                                        blue: 0.77
+                                    ),
+                                    location: 0.00
+                                ),
+                                Gradient.Stop(
+                                    color: Color(
+                                        red: 0.78,
+                                        green: 0.24,
+                                        blue: 0.5
+                                    ),
+                                    location: 1.00
+                                ),
                             ],
                             startPoint: UnitPoint(x: 0.94, y: 1.28),
                             endPoint: UnitPoint(x: 0.5, y: 1)
                         )
                         .cornerRadius(16)
-                        
+
                         LinearGradient(
                             stops: [
-                                Gradient.Stop(color: .black.opacity(0), location: 0.00),
-                                Gradient.Stop(color: .black.opacity(0.25), location: 1.00),
+                                Gradient.Stop(
+                                    color: .black.opacity(0),
+                                    location: 0.00
+                                ),
+                                Gradient.Stop(
+                                    color: .black.opacity(0.25),
+                                    location: 1.00
+                                ),
                             ],
                             startPoint: .top,
                             endPoint: .bottom
                         )
                         .cornerRadius(16)
-                        
+
                         VStack(spacing: 6) {
                             Text("내 보유 포인트")
                                 .font(.caption.bold())
@@ -65,13 +85,14 @@ struct PointMainView: View {
                         .padding(16)
                     }
                     .frame(height: 120)
-                    
+
                     Spacer()
                     Text("이용 내역")
                         .font(.headline)
                         .padding(.top, 4)
-                    
-                    ForEach(PointHistory.groupedByDate(history), id: \.date) { section in
+
+                    ForEach(PointHistory.groupedByDate(history), id: \.date) {
+                        section in
                         VStack(alignment: .leading, spacing: 8) {
                             Text(section.date)
                                 .font(.subheadline.weight(.semibold))
@@ -83,7 +104,7 @@ struct PointMainView: View {
                             }
                         }
                     }
-                    
+
                     Spacer(minLength: 24)
                 }
                 .padding(.horizontal, 16)
@@ -98,7 +119,7 @@ struct PointMainView: View {
 struct PointHistoryRow: View {
     @AppStorage("point") private var point: Int = 0
     let item: PointHistory
-    
+
     var body: some View {
         HStack {
             Text(item.title)
@@ -107,7 +128,9 @@ struct PointHistoryRow: View {
             Spacer()
             Text(item.delta > 0 ? "+\(item.delta)P" : "\(item.delta)P")
                 .font(.subheadline.weight(.semibold))
-                .foregroundStyle(item.delta > 0 ? Color("primaryColor") : Color.primary)
+                .foregroundStyle(
+                    item.delta > 0 ? Color("primaryColor") : Color.primary
+                )
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
                 .background(
@@ -127,15 +150,21 @@ struct PointHistory: Identifiable {
     let date: Date
     let title: String
     let delta: Int
-    
+
     static let mock: [PointHistory] = [
         .init(date: Date(), title: "장원영 스타일리스트 상담", delta: -200),
         .init(date: Date(), title: "설윤 스타일리스트 상담 취소 (자동 환불)", delta: +100),
         .init(date: Date(), title: "설윤 스타일리스트 상담", delta: -100),
-        .init(date: Calendar.current.date(byAdding: .day, value: -6, to: Date())!, title: "김지우 스타일리스트 상담", delta: -200)
+        .init(
+            date: Calendar.current.date(byAdding: .day, value: -6, to: Date())!,
+            title: "김지우 스타일리스트 상담",
+            delta: -200
+        ),
     ]
-    
-    static func groupedByDate(_ list: [PointHistory]) -> [(date: String, items: [PointHistory])] {
+
+    static func groupedByDate(_ list: [PointHistory]) -> [(
+        date: String, items: [PointHistory]
+    )] {
         let fmt = DateFormatter()
         fmt.dateFormat = "M월 d일"
         let groups = Dictionary(grouping: list) { fmt.string(from: $0.date) }

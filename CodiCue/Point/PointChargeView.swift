@@ -11,11 +11,11 @@ struct PointChargeView: View {
     @AppStorage("point") private var point: Int = 0
 
     private let packs: [PointPack] = [
-        .init(points: 200,   priceKRW:  2_200),
-        .init(points: 500,   priceKRW:  5_500),
+        .init(points: 200, priceKRW: 2_200),
+        .init(points: 500, priceKRW: 5_500),
         .init(points: 1_000, priceKRW: 10_000),
         .init(points: 1_500, priceKRW: 13_000),
-        .init(points: 2_000, priceKRW: 18_000, isBest: true)
+        .init(points: 2_000, priceKRW: 18_000, isBest: true),
     ]
 
     var body: some View {
