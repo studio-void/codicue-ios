@@ -1,5 +1,5 @@
 //
-//  StylistInfo.swift
+//  Stylist.swift
 //  CodiCue
 //
 //  Created by 임정훈 on 9/22/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct StylistInfo: Hashable, Identifiable {
+struct Stylist: Hashable, Identifiable {
     var id: Int
     var name: String
     var rating: Double

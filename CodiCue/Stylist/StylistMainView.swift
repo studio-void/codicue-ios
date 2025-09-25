@@ -11,9 +11,9 @@ struct StylistMainView: View {
     @State var isLoading: Bool = true
     @State private var query: String = ""
     
-    @State var stylists: [StylistInfo] = []
+    @State var stylists: [Stylist] = []
 
-    var filtered: [StylistInfo] {
+    var filtered: [Stylist] {
         let q = query.trimmingCharacters(in: .whitespaces)
         return q.isEmpty
             ? stylists
@@ -61,7 +61,7 @@ struct StylistMainView: View {
 }
 
 struct StylistCard: View {
-    let stylist: StylistInfo
+    let stylist: Stylist
 
     var body: some View {
         HStack(spacing: 12) {

@@ -12,7 +12,7 @@ import VoidUtilities
 struct HomeView: View {
     @State var condition: String = ""
     @State var isLoading: Bool = true
-    @State var stylists: [StylistInfo] = []
+    @State var stylists: [Stylist] = []
     var body: some View {
         NavigationView {
             VStack {

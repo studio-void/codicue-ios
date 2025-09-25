@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 import SwiftyJSON
 
-func fetchStylists() async -> [StylistInfo] {
+func fetchStylists() async -> [Stylist] {
     let (isSuccess, jsonOpt) = await sendGetRequest(endpoint: "stylists")
     guard isSuccess, let json = jsonOpt else {
         return []
@@ -18,7 +18,7 @@ func fetchStylists() async -> [StylistInfo] {
     // Expecting an array of stylist objects
     let array = json.arrayValue
 
-    var parsed: [StylistInfo] = []
+    var parsed: [Stylist] = []
     let iso = ISO8601DateFormatter()
 
     for item in array {
@@ -47,7 +47,7 @@ func fetchStylists() async -> [StylistInfo] {
             updatedAt = date
         }
 
-        let stylist = StylistInfo(
+        let stylist = Stylist(
             id: Int(id) ?? 0,
             name: name,
             rating: rating,

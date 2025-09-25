@@ -9,7 +9,7 @@ import SDWebImageSwiftUI
 import SwiftUI
 
 struct StylistInfoView: View {
-    let stylist: StylistInfo
+    let stylist: Stylist
     @State private var query: String = ""
     @Environment(\.dismiss) private var dismiss
     @State private var isImageLoading: Bool = true
