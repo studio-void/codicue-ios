@@ -40,8 +40,12 @@ struct StructureView: View {
             }
             .padding()
             .background(
-                NavigationLink("", destination: PointMainView(), isActive: $goPoints)
-                    .hidden()
+                NavigationLink(
+                    "",
+                    destination: PointMainView(),
+                    isActive: $goPoints
+                )
+                .hidden()
             )
         }
     }
@@ -108,13 +112,20 @@ struct CustomTabBar: View {
 
     var body: some View {
         HStack {
-            ForEach(Array(Tab.allCases.enumerated()), id: \.element.id) { index, tab in
+            ForEach(Array(Tab.allCases.enumerated()), id: \.element.id) {
+                index,
+                tab in
                 VStack(spacing: 4) {
-                    Image(systemName: selectedTab == tab ? tab.filledIconName : tab.unfilledIconName)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 22)
-                        .foregroundColor(selectedTab == tab ? Color("primaryColor") : .primary)
+                    Image(
+                        systemName: selectedTab == tab
+                            ? tab.filledIconName : tab.unfilledIconName
+                    )
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 22)
+                    .foregroundColor(
+                        selectedTab == tab ? Color("primaryColor") : .primary
+                    )
                 }
                 .contentShape(Rectangle())
                 .onTapGesture { selectedTab = tab }
