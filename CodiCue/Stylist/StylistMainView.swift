@@ -7,57 +7,56 @@
 
 import SwiftUI
 
-struct Stylist: Identifiable, Hashable {
-    let id = UUID()
-    let name: String
-    let rating: Double
-    let isVerified: Bool
-}
-
-let sampleStylists: [Stylist] = [
-    .init(name: "장원영", rating: 4.93, isVerified: true),
-    .init(name: "설 윤", rating: 4.99, isVerified: false),
-    .init(name: "김지우", rating: 4.74, isVerified: true),
-    .init(name: "아이유", rating: 4.57, isVerified: false),
-]
-
 struct StylistMainView: View {
+    @State var isLoading: Bool = true
     @State private var query: String = ""
+    
+    @State var stylists: [Stylist] = []
 
     var filtered: [Stylist] {
         let q = query.trimmingCharacters(in: .whitespaces)
         return q.isEmpty
-        ? sampleStylists
-        : sampleStylists.filter { $0.name.localizedCaseInsensitiveContains(q) }
+            ? stylists
+            : stylists.filter {
+                $0.name.localizedCaseInsensitiveContains(q)
+            }
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationView {
             VStack(spacing: 16) {
-                Spacer().frame(height: 5)
-
                 SearchBar(
                     text: $query,
                     placeholder: "원하시는 스타일리스트를 검색하세요",
-                    onSubmit: { }
+                    onSubmit: {}
                 )
 
                 ScrollView {
                     VStack(spacing: 16) {
-                        ForEach(filtered) { stylist in
-                            NavigationLink(value: stylist) {
-                                StylistCard(stylist: stylist)
+                        if isLoading {
+                            ProgressView()
+                        } else {
+                            ForEach(filtered) { stylist in
+                                NavigationLink(destination: StylistInfoView(stylist: stylist)) {
+                                    StylistCard(stylist: stylist)
+                                }
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
                         }
                     }
                     .padding(.bottom, 12)
                 }
-            }
-            .navigationDestination(for: Stylist.self) { stylist in
-                StylistInfoView(stylist: stylist)
+                .task { await loadStylists() }
             }
         }
+    }
+    
+    @MainActor
+    private func loadStylists() async {
+        isLoading = true
+        let result = await fetchStylists()
+        stylists = result
+        isLoading = false
     }
 }
 
@@ -83,9 +82,12 @@ struct StylistCard: View {
                     Text(stylist.name).font(.title3.bold())
                     if stylist.isVerified {
                         if UIImage(named: "verified") != nil {
-                            Image("verified").resizable().scaledToFit().frame(height: 18)
+                            Image("verified").resizable().scaledToFit().frame(
+                                height: 18
+                            )
                         } else {
-                            Image(systemName: "checkmark.seal.fill").foregroundStyle(.blue)
+                            Image(systemName: "checkmark.seal.fill")
+                                .foregroundStyle(.blue)
                         }
                     }
                 }
@@ -104,9 +106,15 @@ struct StylistCard: View {
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.06), radius: 12, x: 0, y: 6)
+                .shadow(
+                    color: Color.black.opacity(0.06),
+                    radius: 12,
+                    x: 0,
+                    y: 6
+                )
         )
     }
 }
 
+#Preview { StylistMainView() }
 #Preview { StructureView() }

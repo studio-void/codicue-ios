@@ -37,19 +37,21 @@ struct MyPageMainView: View {
                 Spacer()
             }
             .padding(.bottom, 4)
-
             MyPageButtonView(label: "프로필 정보 수정")
                 .padding(.bottom, 4)
-
-            MyPageButtonView(label: "시스템 설정", action: {
-                #if os(iOS)
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
+            MyPageButtonView(
+                label: "시스템 설정",
+                action: {
+                    #if os(iOS)
+                        if let url = URL(
+                            string: UIApplication.openSettingsURLString
+                        ) {
+                            UIApplication.shared.open(url)
+                        }
+                    #endif
                 }
-                #endif
-            })
+            )
             .padding(.bottom, 8)
-
             HStack {
                 Text("정보")
                     .font(.title3)
