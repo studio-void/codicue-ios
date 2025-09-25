@@ -218,7 +218,11 @@ struct SignUpView: View {
                 }
                 
                 Button(action: {
-                    isStylist
+                    if isStylist {
+                        stylistSignUp()
+                    } else {
+                        signUp()
+                    }
                 }) {
                     VoidButtonView(.primary, label: "회원가입", tintColor: Color("primaryColor"))
                 }
@@ -232,10 +236,7 @@ struct SignUpView: View {
             let params = ["email": AnyEncodable(email), "password": AnyEncodable(password), "name": AnyEncodable(name), "height": AnyEncodable(height), "weight": AnyEncodable(weight), "preferredStyle": AnyEncodable(selectedStyles)]
             let (isSuccess, data) = await sendPostRequest(endpoint: "user", parameters: params)
             if isSuccess {
-                if let data = data {
-                    let token = data["accessToken"].string
-                    self.jwtToken = token
-                }
+                signIn()
             }
         }
     }
@@ -244,9 +245,32 @@ struct SignUpView: View {
             let params = ["email": AnyEncodable(email), "password": AnyEncodable(password), "name": AnyEncodable(name)]
             let (isSuccess, data) = await sendPostRequest(endpoint: "stylists", parameters: params)
             if isSuccess {
-                if let data = data {
-                    let token = data["accessToken"].string
-                    self.jwtToken = token
+                stylistSignIn()
+            }
+        }
+    }
+    private func signIn() {
+        Task{
+            let params = ["email": email, "password": password]
+            let (isSuccess, data) = await sendPostRequest(endpoint: "auth/login", parameters: params)
+            if isSuccess {
+                if let data {
+                    let jwtToken = data["accessToken"]
+//                    print(jwtToken)
+                    self.jwtToken = jwtToken.string
+                }
+            }
+        }
+    }
+    private func stylistSignIn() {
+        Task{
+            let params = ["email": email, "password": password]
+            let (isSuccess, data) = await sendPostRequest(endpoint: "auth/stylist/login", parameters: params)
+            if isSuccess {
+                if let data {
+                    let jwtToken = data["accessToken"]
+//                    print(jwtToken)
+                    self.jwtToken = jwtToken.string
                 }
             }
         }
