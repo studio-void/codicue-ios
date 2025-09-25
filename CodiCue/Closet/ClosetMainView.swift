@@ -23,15 +23,44 @@ struct Garment: Identifiable {
     let category: GarmentCategory
 
     static let mock: [Garment] = [
-        .init(title: "브리드 링클 체크 셔츠 차콜", imageName: nil, tags: ["#셔츠", "#체크무늬"], category: .top),
-        .init(title: "스트라이프 니트", imageName: nil, tags: ["#후드집업", "#니트"], category: .top),
-        .init(title: "아이보리 하프팬츠", imageName: nil, tags: ["#아이보리", "#팬츠"], category: .bottom),
-        .init(title: "블랙 트레이닝 반바지", imageName: nil, tags: ["#쿨톤", "#반바지"], category: .bottom),
-        .init(title: "더비슈즈 블랙", imageName: nil, tags: ["#포멀"], category: .shoes),
-        .init(title: "메탈 시계", imageName: nil, tags: ["#실버"], category: .accessory),
+        .init(
+            title: "브리드 링클 체크 셔츠 차콜",
+            imageName: nil,
+            tags: ["#셔츠", "#체크무늬"],
+            category: .top
+        ),
+        .init(
+            title: "스트라이프 니트",
+            imageName: nil,
+            tags: ["#후드집업", "#니트"],
+            category: .top
+        ),
+        .init(
+            title: "아이보리 하프팬츠",
+            imageName: nil,
+            tags: ["#아이보리", "#팬츠"],
+            category: .bottom
+        ),
+        .init(
+            title: "블랙 트레이닝 반바지",
+            imageName: nil,
+            tags: ["#쿨톤", "#반바지"],
+            category: .bottom
+        ),
+        .init(
+            title: "더비슈즈 블랙",
+            imageName: nil,
+            tags: ["#포멀"],
+            category: .shoes
+        ),
+        .init(
+            title: "메탈 시계",
+            imageName: nil,
+            tags: ["#실버"],
+            category: .accessory
+        ),
     ]
 }
-
 
 private struct ClosetCardLayout {
     let cardWidth: CGFloat
@@ -47,7 +76,6 @@ private struct ClosetCardLayout {
         }
     }
 }
-
 
 struct ClosetMainView: View {
     @State private var items: [Garment] = Garment.mock
@@ -112,7 +140,6 @@ struct ClosetMainView: View {
     }
 }
 
-
 private struct GarmentRow: View {
     let items: [Garment]
     let layout: ClosetCardLayout
@@ -151,7 +178,6 @@ private struct EqualHeightKey: PreferenceKey {
         value = max(value, nextValue())
     }
 }
-
 
 private struct GarmentCard: View {
     let garment: Garment

@@ -14,7 +14,7 @@ struct HomeView: View {
     @State var isLoading: Bool = true
     @State var stylists: [StylistInfo] = []
     var body: some View {
-        VStack{
+        VStack {
             TextField("상황을 알려주시면 스타일링해드립니다!", text: $condition)
                 .padding()
                 .background(
@@ -22,27 +22,33 @@ struct HomeView: View {
                         .stroke(Color.gray, lineWidth: 1)
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 16))
-                .padding(.bottom,8)
+                .padding(.bottom, 8)
             if condition != "" {
                 ScrollView(.horizontal) {
-                    HStack{
+                    HStack {
                         ConditionChipView(label: "MOOD")
                         ConditionChipView(label: "OOTD")
                     }
                 }
-                .padding(.bottom,8)
+                .padding(.bottom, 8)
             }
             ScrollView(.horizontal) {
                 if stylists.isEmpty || isLoading {
-                    HStack{
-                        Spacer ()
+                    HStack {
+                        Spacer()
                         ProgressView()
                         Spacer()
                     }
                 } else {
-                    HStack(spacing: 24){
+                    HStack(spacing: 24) {
                         ForEach(stylists) { stylist in
-                            HomeStylistCardView(imageURL: URL(string: stylist.profileImageUrl), name: stylist.name, rating: stylist.rating, descriptions: stylist.career, isVerified: stylist.isVerified)
+                            HomeStylistCardView(
+                                imageURL: URL(string: stylist.profileImageUrl),
+                                name: stylist.name,
+                                rating: stylist.rating,
+                                descriptions: stylist.career,
+                                isVerified: stylist.isVerified
+                            )
                         }
                     }
                     .padding()
@@ -53,11 +59,13 @@ struct HomeView: View {
             Spacer()
         }
     }
-    
+
     func fetchStylists() {
         Task { @MainActor in
             isLoading = true
-            let (isSuccess, jsonOpt) = await sendGetRequest(endpoint: "stylists")
+            let (isSuccess, jsonOpt) = await sendGetRequest(
+                endpoint: "stylists"
+            )
             defer { isLoading = false }
             guard isSuccess, let json = jsonOpt else {
                 return
@@ -82,19 +90,28 @@ struct HomeView: View {
                 let introduction = item["introduction"].stringValue
                 let career = item["career"].arrayObject as? [String] ?? []
                 let profileImageUrl = item["profileImageUrl"].stringValue
-                let specialtyStyles = item["specialtyStyles"].arrayObject as? [String] ?? []
+                let specialtyStyles =
+                    item["specialtyStyles"].arrayObject as? [String] ?? []
 
                 // Parse dates from either timestamp or ISO8601 string
                 var createdAt: Date = Date()
                 var updatedAt: Date = Date()
-                if let createdMillis = item["createdAt"].double { // milliseconds since epoch
-                    createdAt = Date(timeIntervalSince1970: createdMillis / 1000.0)
-                } else if let createdStr = item["createdAt"].string, let date = iso.date(from: createdStr) {
+                if let createdMillis = item["createdAt"].double {  // milliseconds since epoch
+                    createdAt = Date(
+                        timeIntervalSince1970: createdMillis / 1000.0
+                    )
+                } else if let createdStr = item["createdAt"].string,
+                    let date = iso.date(from: createdStr)
+                {
                     createdAt = date
                 }
                 if let updatedMillis = item["updatedAt"].double {
-                    updatedAt = Date(timeIntervalSince1970: updatedMillis / 1000.0)
-                } else if let updatedStr = item["updatedAt"].string, let date = iso.date(from: updatedStr) {
+                    updatedAt = Date(
+                        timeIntervalSince1970: updatedMillis / 1000.0
+                    )
+                } else if let updatedStr = item["updatedAt"].string,
+                    let date = iso.date(from: updatedStr)
+                {
                     updatedAt = date
                 }
 

@@ -27,7 +27,7 @@ struct StylistInfoView: View {
                 }
                 SearchBar(
                     text: $query,
-                    placeholder: "\(stylist.name) 좋아요"
+                    placeholder: "\(stylist.name) 스타일리스트"
                 )
             }
 
@@ -60,20 +60,28 @@ struct StylistInfoView: View {
                     HStack(spacing: 6) {
                         Text(stylist.name).font(.title3.bold())
                         if stylist.isVerified {
-                            Image("verified").resizable().scaledToFit().frame(height: 18)
+                            Image("verified").resizable().scaledToFit().frame(
+                                height: 18
+                            )
                         }
                     }
 
                     HStack(spacing: 10) {
                         HStack(spacing: 6) {
-                            Image(systemName: "star.fill").foregroundStyle(.yellow)
-                            Text(String(format: "%.2f", stylist.rating)).font(.headline)
+                            Image(systemName: "star.fill").foregroundStyle(
+                                .yellow
+                            )
+                            Text(String(format: "%.2f", stylist.rating)).font(
+                                .headline
+                            )
                             Text("/ 5.0").foregroundStyle(.secondary)
                         }
                         .font(.subheadline)
 
                         HStack(spacing: 6) {
-                            Image(systemName: "text.bubble").foregroundStyle(.secondary)
+                            Image(systemName: "text.bubble").foregroundStyle(
+                                .secondary
+                            )
                             Text("415").foregroundStyle(.secondary)
                         }
                         .font(.subheadline)
@@ -89,12 +97,14 @@ struct StylistInfoView: View {
             }
             .padding(.top, 2)
 
-            Text("""
-            안녕하세요, 스타일리스트 \(stylist.name)입니다.
-            사람의 분위기와 프로젝트 목적을 정확히 읽고, 체형·퍼스널 톤·무드 보드를 바탕으로 가장 설득력 있는 룩을 제안합니다.
+            Text(
+                """
+                안녕하세요, 스타일리스트 \(stylist.name)입니다.
+                사람의 분위기와 프로젝트 목적을 정확히 읽고, 체형·퍼스널 톤·무드 보드를 바탕으로 가장 설득력 있는 룩을 제안합니다.
 
-            결과로 말하는 스타일리스트, \(stylist.name)입니다.
-            """)
+                결과로 말하는 스타일리스트, \(stylist.name)입니다.
+                """
+            )
             .font(.body)
             .lineSpacing(4)
             .foregroundStyle(.primary)
@@ -104,7 +114,12 @@ struct StylistInfoView: View {
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.06), radius: 12, x: 0, y: 6)
+                .shadow(
+                    color: Color.black.opacity(0.06),
+                    radius: 12,
+                    x: 0,
+                    y: 6
+                )
         )
     }
 

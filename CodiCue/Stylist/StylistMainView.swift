@@ -27,8 +27,10 @@ struct StylistMainView: View {
     var filtered: [Stylist] {
         let q = query.trimmingCharacters(in: .whitespaces)
         return q.isEmpty
-        ? sampleStylists
-        : sampleStylists.filter { $0.name.localizedCaseInsensitiveContains(q) }
+            ? sampleStylists
+            : sampleStylists.filter {
+                $0.name.localizedCaseInsensitiveContains(q)
+            }
     }
 
     var body: some View {
@@ -39,7 +41,7 @@ struct StylistMainView: View {
                 SearchBar(
                     text: $query,
                     placeholder: "원하시는 스타일리스트를 검색하세요",
-                    onSubmit: { }
+                    onSubmit: {}
                 )
 
                 ScrollView {
@@ -83,9 +85,12 @@ struct StylistCard: View {
                     Text(stylist.name).font(.title3.bold())
                     if stylist.isVerified {
                         if UIImage(named: "verified") != nil {
-                            Image("verified").resizable().scaledToFit().frame(height: 18)
+                            Image("verified").resizable().scaledToFit().frame(
+                                height: 18
+                            )
                         } else {
-                            Image(systemName: "checkmark.seal.fill").foregroundStyle(.blue)
+                            Image(systemName: "checkmark.seal.fill")
+                                .foregroundStyle(.blue)
                         }
                     }
                 }
@@ -104,7 +109,12 @@ struct StylistCard: View {
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
-                .shadow(color: Color.black.opacity(0.06), radius: 12, x: 0, y: 6)
+                .shadow(
+                    color: Color.black.opacity(0.06),
+                    radius: 12,
+                    x: 0,
+                    y: 6
+                )
         )
     }
 }
