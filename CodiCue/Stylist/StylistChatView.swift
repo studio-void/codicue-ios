@@ -28,7 +28,8 @@ struct StylistChatView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(spacing: 12) {
-                        ForEach(Array(messages.enumerated()), id: \.element.id) { _, msg in
+                        ForEach(Array(messages.enumerated()), id: \.element.id)
+                        { _, msg in
                             ChatBubble(message: msg).id(msg.id)
                         }
                     }
@@ -42,6 +43,7 @@ struct StylistChatView: View {
 
             inputBar
         }
+        .padding()
         .navigationBarBackButtonHidden(true)
         .toolbar(.hidden, for: .navigationBar)
         .overlay {
@@ -57,7 +59,10 @@ struct StylistChatView: View {
                     .frame(width: min(geo.size.width * 0.92, 520))
                     .position(x: geo.size.width / 2, y: geo.size.height / 2)
                     .transition(.scale.combined(with: .opacity))
-                    .animation(.spring(response: 0.28, dampingFraction: 0.9), value: showReview)
+                    .animation(
+                        .spring(response: 0.28, dampingFraction: 0.9),
+                        value: showReview
+                    )
                 }
                 .ignoresSafeArea()
                 .zIndex(1)
@@ -128,8 +133,14 @@ struct ChatMessage: Identifiable {
 
     static let mock: [ChatMessage] = [
         .init(role: .stylist, text: "안녕하세요, 스타일리스트 장원영입니다! 원하는 코디를 알려주세요."),
-        .init(role: .user, text: "안녕하세요, 스타일리스트님! 대학 친구가 주선해 준 미팅을 나가게 되었는데 어떤 옷을 입을지 추천해주세요!"),
-        .init(role: .stylist, text: "안녕하세요, XXX님! XXX님의 옷장을 둘러본 결과, 아래와 같은 코디를 해보는 것은 어떤가요?")
+        .init(
+            role: .user,
+            text: "안녕하세요, 스타일리스트님! 대학 친구가 주선해 준 미팅을 나가게 되었는데 어떤 옷을 입을지 추천해주세요!"
+        ),
+        .init(
+            role: .stylist,
+            text: "안녕하세요, XXX님! XXX님의 옷장을 둘러본 결과, 아래와 같은 코디를 해보는 것은 어떤가요?"
+        ),
     ]
 }
 
@@ -171,13 +182,18 @@ struct TagChip: View {
             .background(
                 Capsule()
                     .fill(Color.white)
-                    .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 1)
+                    .shadow(
+                        color: Color.black.opacity(0.05),
+                        radius: 4,
+                        x: 0,
+                        y: 1
+                    )
             )
     }
 }
 
-private extension StylistChatView {
-    var inputBar: some View {
+extension StylistChatView {
+    fileprivate var inputBar: some View {
         HStack(spacing: 10) {
             TextField("메시지를 입력하세요", text: $input, axis: .vertical)
                 .textInputAutocapitalization(.none)
@@ -193,7 +209,9 @@ private extension StylistChatView {
                 )
 
             Button {
-                let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
+                let trimmed = input.trimmingCharacters(
+                    in: .whitespacesAndNewlines
+                )
                 guard !trimmed.isEmpty else { return }
                 messages.append(.init(role: .user, text: trimmed))
                 input = ""
@@ -228,7 +246,9 @@ struct ReviewSheet: View {
                 if UIImage(named: "verified") != nil {
                     Image("verified").resizable().frame(width: 16, height: 16)
                 } else {
-                    Image(systemName: "checkmark.seal.fill").foregroundStyle(.blue)
+                    Image(systemName: "checkmark.seal.fill").foregroundStyle(
+                        .blue
+                    )
                 }
                 Text("님과의 상담은 어땠나요?").font(.headline)
             }
@@ -254,7 +274,9 @@ struct ReviewSheet: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity, minHeight: 48)
                     .background(
-                        RoundedRectangle(cornerRadius: 12).fill(Color("primaryColor"))
+                        RoundedRectangle(cornerRadius: 12).fill(
+                            Color("primaryColor")
+                        )
                     )
             }
             .buttonStyle(.plain)
@@ -267,7 +289,12 @@ struct ReviewSheet: View {
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color.black.opacity(0.15), lineWidth: 1)
                 )
-                .shadow(color: Color.black.opacity(0.08), radius: 18, x: 0, y: -4)
+                .shadow(
+                    color: Color.black.opacity(0.08),
+                    radius: 18,
+                    x: 0,
+                    y: -4
+                )
         )
         .padding(.horizontal, 16)
     }
@@ -281,7 +308,9 @@ struct StarRating: View {
         HStack(spacing: 6) {
             ForEach(1...max, id: \.self) { i in
                 Image(systemName: i <= rating ? "star.fill" : "star")
-                    .foregroundStyle(i <= rating ? Color.starYellow : Color.gray.opacity(0.6))
+                    .foregroundStyle(
+                        i <= rating ? Color.starYellow : Color.gray.opacity(0.6)
+                    )
                     .font(.system(size: 22))
                     .onTapGesture { rating = i }
             }
