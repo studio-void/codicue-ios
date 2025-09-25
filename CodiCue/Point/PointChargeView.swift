@@ -42,7 +42,27 @@ struct PointChargeView: View {
 
                 LazyVStack(spacing: 12) {
                     ForEach(packs) { pack in
-                        ChargeRow(pack: pack, onTap: {point += pack.points})
+                        ChargeRow(
+                            pack: pack,
+                            onTap: {
+                                Task {
+                                    let header = generateAuthHeader()
+                                    let params = [
+                                        "amount": AnyEncodable(pack.points),
+                                        "reason": AnyEncodable("포인트 결제"),
+                                    ]
+                                    let (isSuccess, _) =
+                                        await sendPostRequest(
+                                            endpoint: "user/points",
+                                            parameters: params,
+                                            headers: header
+                                        )
+                                    if isSuccess {
+                                        point += pack.points
+                                    }
+                                }
+                            }
+                        )
                     }
                 }
 
