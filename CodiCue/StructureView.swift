@@ -10,16 +10,18 @@ import VoidUtilities
 
 struct StructureView: View {
     @State private var selectedTab: Tab = .home
+    @AppStorage("jwtToken") var jwtToken: String?
+    @AppStorage("isStylist") var isStylist: Bool?
     @State private var goPoints: Bool = false
 
     var body: some View {
-        NavigationStack {
+        if (jwtToken != nil) {
             VStack {
-                HeaderView(onCoinsTap: { goPoints = true })
+                HeaderView()
                     .padding(.bottom)
 
                 Spacer()
-
+                // Content area switching based on selectedTab
                 Group {
                     switch selectedTab {
                     case .home:
@@ -39,14 +41,9 @@ struct StructureView: View {
                 CustomTabBar(selectedTab: $selectedTab)
             }
             .padding()
-            .background(
-                NavigationLink(
-                    "",
-                    destination: PointMainView(),
-                    isActive: $goPoints
-                )
-                .hidden()
-            )
+        } else {
+            AuthMainView()
+                .padding()
         }
     }
 }
