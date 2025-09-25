@@ -5,65 +5,86 @@
 //  Created by Yeeun on 9/23/25.
 //
 
+import SDWebImageSwiftUI
 import SwiftUI
+import VoidUtilities
 
 struct ClosetDetailsView: View {
     let garment: Garment
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
+        VStack(spacing: 20) {
+            ScrollView {
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color.gray.opacity(0.1))
-                    Text("👔")
-                        .font(.system(size: 80))
+                    WebImage(url: URL(string: garment.imageURL))
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 240)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
-                .frame(height: 220)
-                .padding(.horizontal, 16)
 
-                Text(garment.title)
-                    .font(.headline)
+                Text(garment.name)
+                    .font(.title2)
                     .fontWeight(.semibold)
                     .foregroundColor(.primary)
-                    .padding(.horizontal, 16)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top)
 
-                Button {
-                } label: {
-                    Text("친구에게 공유하기")
-                        .font(.subheadline.bold())
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color("primaryColor"))
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
-                .padding(.horizontal, 16)
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("장원영님의 조언")
-                        .font(.subheadline.bold())
-                        .foregroundColor(.primary)
-
-                    Text(
-                        "핏: 정사이즈~살짝 오버로, 앞만 살짝 넣입 + 소매 롤업(비율 ↑).\n하의/신발: 블랙 테이퍼드 슬랙스+더비 / 미드워시 스트레이트 데님+화이트 스니커즈 / 올리브 카고+트레일 러너."
+                if garment.advice != nil {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("착용 조언")
+                            .font(.subheadline.bold())
+                            .foregroundColor(.primary)
+                        HStack {
+                            Text(
+                                garment.advice!
+                            )
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            Spacer()
+                        }
+                    }
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.gray.opacity(0.1))
                     )
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+                    .padding(.top, 8)
                 }
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.gray.opacity(0.1))
-                )
-                .padding(.horizontal, 16)
-
-                Spacer()
             }
-            .padding(.top, 20)
+            Spacer()
+
+            if let url = URL(string: garment.imageURL) {
+                ShareLink(
+                    item: url,
+                    message: Text("CodiCue에서 \(garment.name)을(를) 만나보세요!")
+                ) {
+                    VoidButtonView(.primary, label: "친구에게 공유하기", icon: "square.and.arrow.up", tintColor: Color("primaryColor"))
+                }
+            }
         }
+        .padding(.top, 20)
         .navigationTitle("옷 상세정보")
         .navigationBarTitleDisplayMode(.inline)
     }
+}
+
+#Preview {
+    ClosetDetailsView(
+        garment: Garment(
+            id: 1,
+            userId: 1,
+            name: "옷 이름",
+            category: GarmentCategory(rawValue: "TOP")!,
+            imageURL:
+                "https://i.namu.wiki/i/plYksH3UeGGZLVgjTfbJ8rf1vN2HMIl9ztcpxtfpeQwCYR1CBh3SzbQ0RsgbZ65xiYR-fk7A3Dxy7cExs4rABQ.webp",
+            recommendedBodyType: [BodyType(rawValue: "OVAL")!],
+            advice: "이렇게 입으쇼",
+            tags: ["tag1", "tag2"],
+            createdAt: Date(),
+            updatedAt: Date()
+        )
+    )
 }
