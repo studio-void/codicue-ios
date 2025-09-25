@@ -12,12 +12,13 @@ struct StructureView: View {
     @State private var selectedTab: Tab = .home
     @AppStorage("jwtToken") var jwtToken: String?
     @AppStorage("isStylist") var isStylist: Bool?
+    @State private var showPointSheet: Bool = false
     @State private var goPoints: Bool = false
 
     var body: some View {
-        if (jwtToken != nil) {
+        if jwtToken != nil {
             VStack {
-                HeaderView()
+                HeaderView(onCoinsTap: { showPointSheet.toggle() })
                     .padding(.bottom)
 
                 Spacer()
@@ -41,6 +42,9 @@ struct StructureView: View {
                 CustomTabBar(selectedTab: $selectedTab)
             }
             .padding()
+            .sheet(isPresented: $showPointSheet) {
+                PointMainView()
+            }
         } else {
             AuthMainView()
                 .padding()

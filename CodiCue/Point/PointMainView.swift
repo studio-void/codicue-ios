@@ -9,12 +9,20 @@ import SwiftUI
 
 struct PointMainView: View {
     @AppStorage("point") private var point: Int = 0
+    @Environment(\.presentationMode) var presentationMode
     @State private var history: [PointHistory] = PointHistory.mock
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
+                    Button(action: { presentationMode.wrappedValue.dismiss() })
+                    {
+                        Image(systemName: "xmark")
+                    }
+                    .tint(.primary)
+                    .padding(.vertical,8)
+
                     Text("포인트")
                         .font(.title3.bold())
 

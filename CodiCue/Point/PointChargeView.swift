@@ -42,8 +42,7 @@ struct PointChargeView: View {
 
                 LazyVStack(spacing: 12) {
                     ForEach(packs) { pack in
-                        ChargeRow(pack: pack) {
-                        }
+                        ChargeRow(pack: pack, onTap: {point += pack.points})
                     }
                 }
 
