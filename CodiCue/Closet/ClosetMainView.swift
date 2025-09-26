@@ -5,8 +5,8 @@
 //  Created by Yeeun on 9/23/25.
 //
 
-import SwiftUI
 import SDWebImageSwiftUI
+import SwiftUI
 
 enum GarmentCategory: String, CaseIterable, Identifiable, Codable {
     case top = "TOP"
@@ -32,9 +32,17 @@ enum BodyType: String, Codable, CaseIterable {
     case triangle = "TRIANGLE"
     case invertedTriangle = "INVERTED_TRIANGLE"
     case oval = "OVAL"
+
+    var displayName: String {
+        switch self {
+        case .rectangle: return "직사각형"
+        case .hourglass: return "모래시계형"
+        case .triangle: return "삼각형"
+        case .invertedTriangle: return "역삼각형"
+        case .oval: return "타원형"
+        }
+    }
 }
-
-
 
 struct ClosetMainView: View {
     @State private var items: [Garment] = []
@@ -65,7 +73,9 @@ struct ClosetMainView: View {
                                     if let rows = grouped[cat], !rows.isEmpty {
                                         HStack {
                                             Text(cat.displayName)
-                                                .font(.headline.weight(.semibold))
+                                                .font(
+                                                    .headline.weight(.semibold)
+                                                )
                                             Spacer()
                                         }
                                         .padding(.horizontal, 12)
@@ -75,7 +85,7 @@ struct ClosetMainView: View {
                                                 .fill(Color.gray.opacity(0.1))
                                         )
                                         .padding(.vertical, 4)
-                                        
+
                                         GarmentRow(items: rows)
                                     }
                                 }
@@ -84,11 +94,11 @@ struct ClosetMainView: View {
                         Spacer()
                     }
                 }
-                .task{ await loadCloset() }
-                
+                .task { await loadCloset() }
+
                 VStack {
                     Spacer()
-                    HStack{
+                    HStack {
                         Spacer()
                         Button {
                             showingAdd = true
@@ -97,8 +107,15 @@ struct ClosetMainView: View {
                                 .font(.system(size: 20, weight: .bold))
                                 .foregroundStyle(.white)
                                 .frame(width: 48, height: 48)
-                                .background(Circle().fill(Color("primaryColor")))
-                                .shadow(color: .black.opacity(0.12), radius: 10, x: 0, y: 4)
+                                .background(
+                                    Circle().fill(Color("primaryColor"))
+                                )
+                                .shadow(
+                                    color: .black.opacity(0.12),
+                                    radius: 10,
+                                    x: 0,
+                                    y: 4
+                                )
                         }
                         .buttonStyle(.plain)
                         .padding(.trailing, 4)
@@ -114,7 +131,7 @@ struct ClosetMainView: View {
             .toolbar(.visible, for: .tabBar)
         }
     }
-    
+
     @MainActor
     private func loadCloset() async {
         isLoading = true
@@ -144,8 +161,6 @@ private struct GarmentRow: View {
         }
     }
 }
-
-
 
 private struct GarmentCard: View {
     let garment: Garment
